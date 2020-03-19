@@ -1,4 +1,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
+# ENVIRONMENT VARIABLES
+# Define these secrets as environment variables
+# ----------------------------------------------------------------------------------------------------------------------
+
+# AWS_ACCESS_KEY_ID
+# AWS_SECRET_ACCESS_KEY
+# AWS_DEFAULT_REGION
+
+# DATADOG API KEY must exist in SSM Parameter store matching the name from 'dd_api_key_ssm_name' variable
+
+# ----------------------------------------------------------------------------------------------------------------------
 # REQUIRED PARAMETERS
 # You must provide a value for each of these parameters.
 # ----------------------------------------------------------------------------------------------------------------------
@@ -9,7 +20,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "name" {
-  description = "Lambda name."
+  description = "Lambda function name."
   type        = string
   default     = "datadog-forwarder"
 }

@@ -52,7 +52,7 @@ resource "aws_lambda_function" "lambda" {
       DD_API_KEY_SSM_NAME = var.dd_api_key_ssm_name
       DD_SITE             = var.dd_site
       DD_FORWARD_LOG      = var.forward_log
-      DD_LOG_LEVEL        = "DEBUG"
+      DD_LOG_LEVEL        = "INFO"
     }
   }
 }
@@ -62,7 +62,7 @@ resource "aws_lambda_function" "lambda" {
 # ----------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_role" "lambda" {
-  name_prefix = var.name
+  name_prefix = "${var.name}-"
 
   assume_role_policy = <<EOF
 {
