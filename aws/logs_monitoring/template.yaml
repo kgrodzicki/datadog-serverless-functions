@@ -4,7 +4,7 @@ Description: Pushes logs, metrics and traces from AWS to Datadog.
 Mappings:
   Constants:
     DdForwarder:
-      Version: 3.4.0
+      Version: 3.5.0
 Parameters:
   DdApiKey:
     Type: String
@@ -22,6 +22,8 @@ Parameters:
   MemorySize:
     Type: Number
     Default: 1024
+    MinValue: 128
+    MaxValue: 3008
     Description: Memory size for the Datadog Forwarder Lambda function
   Timeout:
     Type: Number
@@ -266,7 +268,7 @@ Resources:
         dd_forwarder_version: !FindInMap [Constants, DdForwarder, Version]
       Environment:
         Variables:
-          DD_ENHANCED_METRICS: false
+          DD_ENHANCED_METRICS: "false"
           DD_API_KEY_SECRET_ARN:
             Ref: DdApiKeySecret
           DD_SITE:
@@ -382,6 +384,20 @@ Resources:
                   - tag:GetResources
                 Resource: "*"
               - Ref: AWS::NoValue
+  CloudWatchLogsPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref "Forwarder"
+      Action: lambda:InvokeFunction
+      Principal: !Sub "logs.${AWS::Region}.amazonaws.com"
+      SourceAccount: !Ref "AWS::AccountId"
+  S3Permission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref "Forwarder"
+      Action: lambda:InvokeFunction
+      Principal: "s3.amazonaws.com"
+      SourceAccount: !Ref "AWS::AccountId"
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
